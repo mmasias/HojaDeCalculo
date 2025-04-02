@@ -85,6 +85,8 @@ public class VisiCalcUI {
                 break;
             case 'Q':
                 return false;
+            case 'O':
+                viewport.ordenar();
             default:
                 System.out.println("Comando inválido. Intente nuevamente.");
         }

@@ -23,6 +23,29 @@ public class Viewport {
         return hoja.getCelda(filaInicio + fila, columnaInicio + columna);
     }
 
+    public void ordenar(){
+        int[] pos1=new int[2];
+        int[] pos2=new int[2];
+
+        for(int i=0;i<getColumnasViewport();i++){
+            for(int j=0;j<getFilasViewport();j++){
+
+                for (int k = 0; k < getFilasViewport() - i - 1; k++) {
+                    String valor1 = getCelda(k,j).getContenido();
+                    String valor2 = getCelda(k + 1,j).getContenido();
+                    if (valor1.compareTo(valor2) > 0) {
+                        String temp = valor1;
+                        getCelda(k,j).setContenido(valor2);
+                        getCelda(k + 1,j).setContenido(temp);
+                    }
+                }
+
+            }
+
+
+        }
+
+    }
     public void desplazarVerticalmente(int cantidad) {
         int nuevaFilaInicio = filaInicio + cantidad;
 
