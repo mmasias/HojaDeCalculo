@@ -1,7 +1,7 @@
 package v04;
 
 public class Celda {
-    
+
     private String contenido;
 
     public Celda() {
@@ -14,5 +14,5 @@ public class Celda {
 
     public void setContenido(String contenido) {
         this.contenido = contenido;
-    }            
+    }
 }

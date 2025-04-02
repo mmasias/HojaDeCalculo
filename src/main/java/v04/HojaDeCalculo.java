@@ -1,5 +1,7 @@
 package v04;
 
+import java.util.Scanner;
+
 public class HojaDeCalculo {
 
     private Celda[][] celdas;
@@ -27,5 +29,36 @@ public class HojaDeCalculo {
 
     public int getNumeroDeColumnas() {
         return COLUMNAS;
-    }    
+    }
+
+    public void ordenarColumna(int columna) {
+        for (int i = 0; i < FILAS; i++) {
+            int minIndex = i;
+            for (int j = i; j < FILAS - 1; j++) {
+                try {
+                    String celdaInicial = celdas[minIndex][columna].getContenido();
+                    String celdaActual = celdas[j][columna].getContenido();
+
+                    if (celdaInicial.isEmpty() || celdaActual.isEmpty()) {
+                        continue;
+                    }
+
+                    int numeroInicial = Integer.parseInt(celdaInicial);
+                    int numeroActual = Integer.parseInt(celdaActual);
+
+                    if (numeroActual < numeroInicial) {
+                        minIndex = j;
+                    }
+
+                } catch (Error e) {
+                    continue;
+                }
+            }
+            if (minIndex != i) {
+                String temp = celdas[i][columna].getContenido();
+                celdas[i][columna].setContenido(celdas[minIndex][columna].getContenido());
+                celdas[minIndex][columna].setContenido(temp);
+            }
+        }
+    }
 }

@@ -6,8 +6,10 @@ import librerias.Consola;
 public class VisiCalcUI {
     private Viewport viewport;
     private Scanner scanner;
+    private HojaDeCalculo hoja;
 
     public VisiCalcUI(HojaDeCalculo hoja) {
+        this.hoja = hoja;
         this.viewport = new Viewport(hoja, 15, 10);
         this.scanner = new Scanner(System.in);
     }
@@ -41,8 +43,9 @@ public class VisiCalcUI {
             for (int j = 0; j < viewport.getColumnasViewport(); j++) {
                 String celda = viewport.getCelda(i, j).getContenido();
                 celda = celda.length() > 5 ? celda.substring(0, 5) : String.format("%-5s", celda);
-                
-                if (i == viewport.getFilaCursorGlobal() - viewport.getFilaInicio() && j == viewport.getColumnaCursorGlobal() - viewport.getColumnaInicio()) {
+
+                if (i == viewport.getFilaCursorGlobal() - viewport.getFilaInicio()
+                        && j == viewport.getColumnaCursorGlobal() - viewport.getColumnaInicio()) {
                     System.out.print("[" + celda + "]");
                 } else {
                     System.out.print(" " + celda + " ");
@@ -61,8 +64,8 @@ public class VisiCalcUI {
         char letraColumna = (char) ('A' + columnaActual);
 
         System.out.print("[" + letraColumna + (filaActual + 1) + "] ");
-        System.out.println("OPCIONES: desplazarse: wasd | editar: e | salir: q");
-        System.out.println("COMANDO >");        
+        System.out.println("OPCIONES: desplazarse: wasd | editar: e | ordenar: o | salir: q");
+        System.out.println("COMANDO >");
 
     }
 
@@ -83,6 +86,9 @@ public class VisiCalcUI {
             case 'E':
                 editarCeldaActual();
                 break;
+            case 'O', 'o':
+                ordenarColumna();
+                break;
             case 'Q':
                 return false;
             default:
@@ -94,8 +100,14 @@ public class VisiCalcUI {
     private void editarCeldaActual() {
         Celda celdaActual = viewport.getCeldaCursor();
         Consola.posicionarse(2, 1);
-        System.out.print ("Ingrese el texto:");
+        System.out.print("Ingrese el texto:");
         String texto = scanner.next();
         celdaActual.setContenido(texto);
+    }
+
+    private void ordenarColumna() {
+        int columna = viewport.getColumnaCursorGlobal();
+        System.out.println("ordenando columna: " + columna);
+        hoja.ordenarColumna(columna);
     }
 }
