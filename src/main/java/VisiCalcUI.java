@@ -1,16 +1,11 @@
-package v03;
-
 import java.util.Scanner;
-import librerias.Consola;
 
 public class VisiCalcUI {
-    private HojaDeCalculo hoja;
-    private Navegador navegador;
+    private Viewport viewport;
     private Scanner scanner;
 
     public VisiCalcUI(HojaDeCalculo hoja) {
-        this.hoja = hoja;
-        this.navegador = new Navegador(hoja);
+        this.viewport = new Viewport(hoja, 15, 10);
         this.scanner = new Scanner(System.in);
     }
 
@@ -29,56 +24,65 @@ public class VisiCalcUI {
 
     private void mostrarHoja() {
         Consola.limpiarPantalla();
-        mostrarOpciones(navegador);
+        mostrarOpciones();
         System.out.print("      ");
-        for (int j = 0; j < hoja.getNumeroDeColumnas(); j++) {
-            char letraColumna = (char) ('A' + j);
+        for (int j = 0; j < viewport.getColumnasViewport(); j++) {
+            char letraColumna = (char) ('A' + viewport.getColumnaInicio() + j);
             System.out.printf("%-8s", letraColumna);
         }
         System.out.println();
 
-        for (int i = 0; i < hoja.getNumeroDeFilas(); i++) {
-            System.out.printf("%-5d|", i + 1);
+        for (int i = 0; i < viewport.getFilasViewport(); i++) {
+            System.out.printf("%-5d|", viewport.getFilaInicio() + i + 1);
 
-            for (int j = 0; j < hoja.getNumeroDeColumnas(); j++) {
-                String celda = hoja.getCelda(i, j).getContenido();
+            for (int j = 0; j < viewport.getColumnasViewport(); j++) {
+                String celda = viewport.getCelda(i, j).getContenido();
                 celda = celda.length() > 5 ? celda.substring(0, 5) : String.format("%-5s", celda);
 
-                if (i == navegador.getFilaActual() && j == navegador.getColumaActual()) {
+                if (i == viewport.getFilaCursorGlobal() - viewport.getFilaInicio()
+                        && j == viewport.getColumnaCursorGlobal() - viewport.getColumnaInicio()) {
                     System.out.print("[" + celda + "]");
                 } else {
                     System.out.print(" " + celda + " ");
                 }
                 System.out.print("|");
             }
-
             System.out.println();
         }
         Consola.posicionarse(2, 10);
     }
 
-    private void mostrarOpciones(Navegador navegador) {
-        System.out.print("[" + (char) ('A' + navegador.getColumaActual()) + (navegador.getFilaActual() + 1) + "] ");
-        System.out.println("OPCIONES: desplazarse: wasd | editar: e | salir: q");
+    private void mostrarOpciones() {
+
+        int filaActual = viewport.getFilaCursorGlobal();
+        int columnaActual = viewport.getColumnaCursorGlobal();
+        char letraColumna = (char) ('A' + columnaActual);
+
+        System.out.print("[" + letraColumna + (filaActual + 1) + "] ");
+        System.out.println("OPCIONES: desplazarse: wasd | editar: e | ordenar: o | salir: q");
         System.out.println("COMANDO >");
+
     }
 
     private boolean procesarComando(char comando) {
         switch (comando) {
             case 'W':
-                navegador.moverArriba();
+                viewport.moverCursor(-1, 0);
                 break;
             case 'A':
-                navegador.moverIzquierda();
+                viewport.moverCursor(0, -1);
                 break;
             case 'S':
-                navegador.moverAbajo();
+                viewport.moverCursor(1, 0);
                 break;
             case 'D':
-                navegador.moverDerecha();
+                viewport.moverCursor(0, 1);
                 break;
             case 'E':
                 editarCeldaActual();
+                break;
+            case 'O':
+                hoja.bubleSort();
                 break;
             case 'Q':
                 return false;
@@ -89,9 +93,9 @@ public class VisiCalcUI {
     }
 
     private void editarCeldaActual() {
-        Celda celdaActual = navegador.getCeldaActual();
+        Celda celdaActual = viewport.getCeldaCursor();
         Consola.posicionarse(2, 1);
-        System.out.print ("Ingrese el texto:");
+        System.out.print("Ingrese el texto:");
         String texto = scanner.next();
         celdaActual.setContenido(texto);
     }

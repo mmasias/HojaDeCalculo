@@ -1,5 +1,3 @@
-package v04;
-
 public class Viewport {
     private HojaDeCalculo hoja;
     private int filaInicio;

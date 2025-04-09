@@ -1,5 +1,3 @@
-package librerias;
-
 public class Consola {
 
     public static void limpiarPantalla(){
