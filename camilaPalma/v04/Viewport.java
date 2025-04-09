@@ -42,7 +42,7 @@ public class Viewport {
     public void moverCursor(int desplazamientoFila, int desplazamientoColumna) {
         filaCursor += desplazamientoFila;
         columnaCursor += desplazamientoColumna;
-    
+
         if (filaCursor < 0) {
             desplazarVerticalmente(-1);
             filaCursor = 0;
@@ -50,7 +50,7 @@ public class Viewport {
             desplazarVerticalmente(1);
             filaCursor = FILAS_VIEWPORT - 1;
         }
-    
+
         if (columnaCursor < 0) {
             desplazarHorizontalmente(-1);
             columnaCursor = 0;
@@ -59,7 +59,7 @@ public class Viewport {
             columnaCursor = COLUMNAS_VIEWPORT - 1;
         }
     }
-    
+
     public Celda getCeldaCursor() {
         return hoja.getCelda(filaInicio + filaCursor, columnaInicio + columnaCursor);
     }
@@ -83,9 +83,16 @@ public class Viewport {
     public int getFilaCursorGlobal() {
         return filaInicio + filaCursor;
     }
-    
+
     public int getColumnaCursorGlobal() {
         return columnaInicio + columnaCursor;
     }
 
+    public int getMaxFilas() {
+        return hoja.getNumeroDeFilas();
+    }
+
+    public int getMaxColumnas() {
+        return hoja.getNumeroDeColumnas();
+    }
 }
