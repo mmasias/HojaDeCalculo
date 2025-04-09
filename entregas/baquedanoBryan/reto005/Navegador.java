@@ -1,4 +1,4 @@
-package v04;
+package v04.Navegador;
 
 public class Navegador {
     private HojaDeCalculo hoja;

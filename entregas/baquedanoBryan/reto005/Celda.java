@@ -1,4 +1,5 @@
-package v04;
+package v04.Celda;
+
 
 public class Celda {
     

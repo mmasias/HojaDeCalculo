@@ -1,4 +1,4 @@
-package v04;
+package entregas.baquedanoBryan.reto005.VisiCalc;
 
 import java.util.Scanner;
 import librerias.Consola;
@@ -55,15 +55,12 @@ public class VisiCalcUI {
     }
 
     private void mostrarOpciones() {
-
         int filaActual = viewport.getFilaCursorGlobal();
         int columnaActual = viewport.getColumnaCursorGlobal();
         char letraColumna = (char) ('A' + columnaActual);
-
         System.out.print("[" + letraColumna + (filaActual + 1) + "] ");
-        System.out.println("OPCIONES: desplazarse: wasd | editar: e | salir: q");
-        System.out.println("COMANDO >");        
-
+        System.out.println("OPCIONES: desplazarse: wasd | editar: e | ordenar: o | salir: q");
+        System.out.println("COMANDO >");
     }
 
     private boolean procesarComando(char comando) {
@@ -83,12 +80,31 @@ public class VisiCalcUI {
             case 'E':
                 editarCeldaActual();
                 break;
+            case 'O':
+                ordenarRangoHorizontal();
+                break;
             case 'Q':
                 return false;
             default:
                 System.out.println("Comando inválido. Intente nuevamente.");
         }
         return true;
+    }
+
+    private void ordenarRangoHorizontal() {
+        HojaDeCalculo hoja = new HojaDeCalculo(viewport.getFilasViewport(), viewport.getColumnasViewport());
+        int filaActual = viewport.getFilaCursorGlobal();
+        
+        Consola.posicionarse(2, 1);
+        System.out.print("Columna inicial (letra): ");
+        char columnaInicioLetra = scanner.next().toUpperCase().charAt(0);
+        int columnaInicio = columnaInicioLetra - 'A';
+        
+        System.out.print("Columna final (letra): ");
+        char columnaFinLetra = scanner.next().toUpperCase().charAt(0);
+        int columnaFin = columnaFinLetra - 'A';
+        
+        hoja.ordenarRangoHorizontal(filaActual, columnaInicio, columnaFin);
     }
 
     private void editarCeldaActual() {
