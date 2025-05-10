@@ -27,25 +27,37 @@ public class VisiCalcUI {
     }
 
     private void mostrarHoja() {
+        
+        imprimirEncabezadoColumna();
+        for (int i = 0; i < viewport.getFilasViewport(); i++) {
+            imprimirEncabezadoFila(i);
+            for (int j = 0; j < viewport.getColumnasViewport(); j++) {
+                String contenidoCelda = viewport.getCelda(i, j).getContenido();
+                contenidoCelda = contenidoCelda.length() > 5 ? contenidoCelda.substring(0, 5) : String.format("%-5s", contenidoCelda);
+                char separadorIzquierda = ' ';
+                char separadorDerecha = ' ';
+                if(i==viewport.getFilaCursorGlobal() && j == viewport.getColumnaCursorGlobal()){
+                    separadorIzquierda = '[';
+                    separadorDerecha = ']';
+                }
+                System.out.print(separadorIzquierda + contenidoCelda + separadorDerecha + "|");
+            }
+
+            System.out.println();
+        }
+    }
+
+    private void imprimirEncabezadoFila(int i) {
+        System.out.printf("%-5d|", viewport.getFilaInicio() + i + 1);
+    }
+
+    private void imprimirEncabezadoColumna() {
         System.out.print("      ");
         for (int j = 0; j < viewport.getColumnasViewport(); j++) {
             char letraColumna = (char) ('A' + viewport.getColumnaInicio() + j);
             System.out.printf("%-8s", letraColumna);
         }
         System.out.println();
-
-        for (int i = 0; i < viewport.getFilasViewport(); i++) {
-            System.out.printf("%-5d|", viewport.getFilaInicio() + i + 1);
-
-            for (int j = 0; j < viewport.getColumnasViewport(); j++) {
-                String contenidoCelda = viewport.getCelda(i, j).getContenido();
-                contenidoCelda = contenidoCelda.length() > 5 ? contenidoCelda.substring(0, 5)
-                        : String.format("%-5s", contenidoCelda);
-                System.out.print(" " + contenidoCelda + " |");
-            }
-
-            System.out.println();
-        }
     }
 
     private void mostrarOpciones() {
